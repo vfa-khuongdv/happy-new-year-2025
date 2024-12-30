@@ -3,7 +3,7 @@ import VideoPlaylist from './video-playlist'
 
 const videos = [
   { id: '1', src: '/assets/video.mp4', title: 'Happy New Year 2025!' },
-  { id: '2', src: '/assets/fulstack-tech.mp4', title: 'Fullstack 2024' },
+  { id: '2', src: '/assets/video2.mp4', title: 'Blueprint for 2025!' },
 ]
 
 export default function NewYearVideo() {
@@ -21,7 +21,7 @@ export default function NewYearVideo() {
         <VideoPlaylist videos={videos} />
 
         <p className="text-center mt-6 text-gray-300">
-          Wishing you a wonderful year ahead filled with joy and success! 🎉
+          Wishing you a wonderful year ahead filled with joy and success! 🎉🎉🎉
         </p>
       </div>
     </div>

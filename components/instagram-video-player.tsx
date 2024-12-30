@@ -10,8 +10,8 @@ interface InstagramVideoPlayerProps {
 }
 
 export default function InstagramVideoPlayer({ src, onEnded }: InstagramVideoPlayerProps) {
-  const [isPlaying, setIsPlaying] = useState(true)
-  const [isMuted, setIsMuted] = useState(true)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [isMuted, setIsMuted] = useState(false)
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -40,14 +40,14 @@ export default function InstagramVideoPlayer({ src, onEnded }: InstagramVideoPla
     }
   }, [onEnded])
 
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(error => {
-        console.error("Autoplay was prevented:", error)
-        setIsPlaying(false)
-      })
-    }
-  }, [src])
+  // useEffect(() => {
+  //   if (videoRef.current) {
+  //     videoRef.current.play().catch(error => {
+  //       console.error("Autoplay was prevented:", error)
+  //       setIsPlaying(false)
+  //     })
+  //   }
+  // }, [src])
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -90,7 +90,7 @@ export default function InstagramVideoPlayer({ src, onEnded }: InstagramVideoPla
         loop={false}
         playsInline
         muted={isMuted}
-        autoPlay
+        autoPlay={false}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 opacity-0 hover:opacity-100 transition-opacity duration-300">
         <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col gap-2">

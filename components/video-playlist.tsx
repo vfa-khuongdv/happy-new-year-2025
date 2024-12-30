@@ -55,9 +55,8 @@ export default function VideoPlaylist({ videos }: VideoPlaylistProps) {
             <button
               key={video.id}
               onClick={() => setCurrentVideoIndex(index)}
-              className={`w-3 h-3 rounded-full ${
-                index === currentVideoIndex ? 'bg-white' : 'bg-gray-500'
-              }`}
+              className={`w-3 h-3 rounded-full ${index === currentVideoIndex ? 'bg-white' : 'bg-gray-500'
+                }`}
             />
           ))}
         </div>

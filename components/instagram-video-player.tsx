@@ -1,16 +1,17 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react'
+import { Play, Pause, Volume2, VolumeX, Maximize2 } from 'lucide-react'
 import { Slider } from "@/components/ui/slider"
 
 interface InstagramVideoPlayerProps {
   src: string
+  onEnded?: () => void
 }
 
-export default function InstagramVideoPlayer({ src }: InstagramVideoPlayerProps) {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(false)
+export default function InstagramVideoPlayer({ src, onEnded }: InstagramVideoPlayerProps) {
+  const [isPlaying, setIsPlaying] = useState(true)
+  const [isMuted, setIsMuted] = useState(true)
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -23,13 +24,30 @@ export default function InstagramVideoPlayer({ src }: InstagramVideoPlayerProps)
       setProgress((video.currentTime / video.duration) * 100)
     }
 
+    const handleEnded = () => {
+      if (onEnded) {
+        onEnded()
+      }
+    }
+
     video.addEventListener('timeupdate', updateProgress)
     video.addEventListener('loadedmetadata', () => setDuration(video.duration))
+    video.addEventListener('ended', handleEnded)
 
     return () => {
       video.removeEventListener('timeupdate', updateProgress)
+      video.removeEventListener('ended', handleEnded)
     }
-  }, [])
+  }, [onEnded])
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.error("Autoplay was prevented:", error)
+        setIsPlaying(false)
+      })
+    }
+  }, [src])
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -69,9 +87,10 @@ export default function InstagramVideoPlayer({ src }: InstagramVideoPlayerProps)
         ref={videoRef}
         src={src}
         className="absolute inset-0 w-full h-full object-cover"
-        loop
+        loop={false}
         playsInline
         muted={isMuted}
+        autoPlay
       />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 opacity-0 hover:opacity-100 transition-opacity duration-300">
         <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col gap-2">
@@ -94,9 +113,9 @@ export default function InstagramVideoPlayer({ src }: InstagramVideoPlayerProps)
                 {formatTime(videoRef.current?.currentTime || 0)} / {formatTime(duration)}
               </span>
             </div>
-            {/* <button className="hover:text-gray-300 transition-colors">
-              <Maximize2 onClick={handleFullscreen} className="w-6 h-6" />
-            </button> */}
+            <button className="hover:text-gray-300 transition-colors">
+              <Maximize2 className="w-6 h-6" />
+            </button>
           </div>
         </div>
       </div>

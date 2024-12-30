@@ -40,14 +40,14 @@ export default function InstagramVideoPlayer({ src, onEnded }: InstagramVideoPla
     }
   }, [onEnded])
 
-  // useEffect(() => {
-  //   if (videoRef.current) {
-  //     videoRef.current.play().catch(error => {
-  //       console.error("Autoplay was prevented:", error)
-  //       setIsPlaying(false)
-  //     })
-  //   }
-  // }, [src])
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.error("Autoplay was prevented:", error)
+        setIsPlaying(false)
+      })
+    }
+  }, [src])
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -113,9 +113,6 @@ export default function InstagramVideoPlayer({ src, onEnded }: InstagramVideoPla
                 {formatTime(videoRef.current?.currentTime || 0)} / {formatTime(duration)}
               </span>
             </div>
-            <button className="hover:text-gray-300 transition-colors">
-              <Maximize2 className="w-6 h-6" />
-            </button>
           </div>
         </div>
       </div>
